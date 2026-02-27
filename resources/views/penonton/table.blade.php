@@ -27,10 +27,12 @@
                     <table id="penonton-table" class="table table-striped table-bordered display compact nowrap w-100" style="width:100%">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>Kode Penonton</th>
                                 <th>Nama Penonton</th>
                                 <th>Nomor HP</th>
                                 <th>Status Penonton</th>
+                                <th>Jenis Tiket</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,6 +56,47 @@
         </div>
     </div>
 
+    <!-- Modal copied/adapted from index.blade.php -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">Berhasil!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-success text-center mb-4" role="alert">
+                        <strong>Kode Pendaftaran valid</strong>
+                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="width: 40%;">Nama</th>
+                                <td id="modal_nama_penonton"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Nomor Telpon</th>
+                                <td id="modal_nohp_penonton"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Jenis Tiket</th>
+                                <td id="modal_jenis_tiket_penonton"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Status</th>
+                                <td id="modal_status_penonton"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" id="modal_okBtn">OK</button>
+                    <button type="button" class="btn btn-primary" id="modal_checkInBtn">Check In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5 JS (Popper included) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery CDN -->
@@ -69,7 +112,7 @@
 
     <script>
         $(document).ready(function() {
-            $('#penonton-table').DataTable({
+            var table = $('#penonton-table').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -79,12 +122,93 @@
                     type: "GET"
                 },
                 columns: [
+                    { data: 'id_pk_penonton', name: 'id_pk_penonton' },
                     { data: 'kode_penonton', name: 'kode_penonton' },
                     { data: 'nama_penonton', name: 'nama_penonton' },
                     { data: 'nohp_penonton', name: 'nohp_penonton' },
-                    { data: 'status_penonton', name: 'status_penonton' }
+                    { data: 'status_penonton', name: 'status_penonton' },
+                    { data: 'jenis_tiket_penonton', name: 'jenis_tiket_penonton' },
                 ],
                 order: [[0, 'asc']],
+            });
+
+            // Attach click handler to table rows after draw
+            $('#penonton-table tbody').on('click', 'tr', function () {
+                var rowData = table.row(this).data();
+                // If row is a 'no data' display, ignore it
+                if (!rowData || rowData.kode_penonton === undefined) return;
+
+                // Assume kode_penonton is available
+                var kode = rowData.kode_penonton;
+
+                // Reset modal content
+                $("#modal_nama_penonton").text("");
+                $("#modal_nohp_penonton").text("");
+                $("#modal_status_penonton").text("");
+                $("#modal_jenis_tiket_penonton").text("");
+                $("#modal_checkInBtn").data("kode", kode); // Keep kode in button for later
+
+                // Disable checkin while validating
+                $("#modal_checkInBtn").hide();
+
+                // AJAX validation as in index.blade.php
+                $.ajax({
+                    url: "{{  route('penonton.validateKodePenonton') }}",
+                    method: 'POST',
+                    data: {
+                        kode_penonton: kode,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status) {
+                            var modal = new bootstrap.Modal(document.getElementById('successModal'));
+                            // Fill modal fields
+                            $("#modal_nama_penonton").text(response.data.nama_penonton);
+                            $("#modal_nohp_penonton").text(response.data.nohp_penonton);
+                            $("#modal_status_penonton").text(response.data.status_penonton);
+                            $("#modal_jenis_tiket_penonton").text(response.data.jenis_tiket_penonton);
+                            // Show Check In button only if "Belum Checkin"
+                            if(response.data.status_penonton == "Belum Checkin") {
+                                $("#modal_checkInBtn").show();
+                            } else {
+                                $("#modal_checkInBtn").hide();
+                            }
+                            // Open modal
+                            modal.show();
+                        } else {
+                            alert('Kode pendaftaran ga di temukan.');
+                        }
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                });
+            });
+
+            // Check In functionality as in index.blade.php
+            $(document).on("click", "#modal_checkInBtn", function() {
+                var kode = $(this).data("kode");
+
+                $.ajax({
+                    url: "{{  route('penonton.checkIn') }}",
+                    method: 'POST',
+                    data: {
+                        kode_penonton: kode,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status) {
+                            alert('Penonton berhasil check in.');
+                            $("#modal_okBtn").click();
+                            table.ajax.reload(null, false);
+                        }
+                    },
+                    error: function() {
+                        alert('Terjadi kesalahan waktu check in.');
+                    }
+                });
             });
         });
     </script>

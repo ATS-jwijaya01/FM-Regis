@@ -68,6 +68,10 @@
                                 <th scope="row">Status</th>
                                 <td id="status_penonton"></td>
                             </tr>
+                            <tr>
+                                <th scope="row">Jenis Tiket</th>
+                                <td id="jenis_tiket_penonton"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -116,6 +120,7 @@
                             $("#nama_penonton").text(response.data.nama_penonton);
                             $("#nohp_penonton").text(response.data.nohp_penonton);
                             $("#status_penonton").text(response.data.status_penonton);
+                            $("#jenis_tiket_penonton").text(response.data.jenis_tiket_penonton);
 
                             if(response.data.status_penonton == "Belum Checkin") {
                                 $("#checkInBtn").show();

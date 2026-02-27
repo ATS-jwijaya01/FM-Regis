@@ -8,7 +8,7 @@ class PenontonModel extends ATSModel
 {
     protected $table = 'penonton';
     protected $primaryKey = 'id_pk_penonton';
-    protected $fillable = ['id_pk_penonton', 'kode_penonton', 'nama_penonton', 'tipe_penonton', 'nohp_penonton', 'email_penonton', 'status_penonton', 'waktu_checking_penonton', 'catatan_penonton'];
+    protected $fillable = ['id_pk_penonton', 'kode_penonton', 'nama_penonton', 'tipe_penonton', 'nohp_penonton', 'email_penonton', 'status_penonton', 'waktu_checking_penonton', 'catatan_penonton', 'jenis_tiket_penonton'];
 
     const TIPE_PENONTON_ORANG_TUA = 'Orang Tua';
     const TIPE_PENONTON_PENGUNJUNG_UMUM = 'Pengunjung Umum';
@@ -16,6 +16,11 @@ class PenontonModel extends ATSModel
 
     const STATUS_PENONTON_BELUM_CHECKIN = 'Belum Checkin';
     const STATUS_PENONTON_CHECKIN = 'Sudah Checkin';
+
+    const TIPE_TIKET_KU = "Ruang KU";
+    const TIPE_TIKET_KU_MAKAN = "Ruang KU & Makan";
+    const TIPE_TIKET_OTS = "OTS";
+
 
     public function getPenontonById($id)
     {
