@@ -24,7 +24,7 @@ class PenontonController extends Controller
         $totalPengunjungUmumBelumCheckin = $PengunjungUmum - $totalPengunjungUmumCheckin;
         
 
-        return view('penonton.counter', compact('OTS', 'PengunjungUmum', 'totalPenonton', 'persentasePengunjungUmumCheckin', 'totalPengunjungUmumBelumCheckin'));
+        return view('penonton.counter', compact('OTS', 'PengunjungUmum', 'totalPenonton', 'persentasePengunjungUmumCheckin', 'totalPengunjungUmumBelumCheckin', 'totalPengunjungUmumCheckin'));
     }
 
     public function validateKodePenonton(Request $request)
