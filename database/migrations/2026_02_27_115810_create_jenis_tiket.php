@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('penonton', function (Blueprint $table) {
-            $table->string('jenis_tiket_penonton', 50)->nullable()->default(PenontonModel::TIPE_TIKET_KU);
+            $table->string('jenis_tiket_penonton', 50)->nullable()->default(PenontonModel::TIPE_TIKET_KU_MAKAN);
         });
     }
 

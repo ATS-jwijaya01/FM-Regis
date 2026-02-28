@@ -18,7 +18,7 @@ class PenontonModel extends ATSModel
     const STATUS_PENONTON_CHECKIN = 'Sudah Checkin';
 
     const TIPE_TIKET_KU = "Ruang KU";
-    const TIPE_TIKET_KU_MAKAN = "Ruang KU & Makan";
+    const TIPE_TIKET_KU_MAKAN = "Ruang KU & Roti";
     const TIPE_TIKET_OTS = "OTS";
 
 
