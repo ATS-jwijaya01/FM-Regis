@@ -43,14 +43,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-6 col-sm-12 mb-3">
+            <div class="col-lg-4 col-sm-12 mb-3">
                 <a href="{{ route('penonton.index') }}" class="col-12 btn btn-primary">
                     <i class="bi bi-plus-lg"></i> Buka Form Validasi
                 </a>
             </div>
-            <div class="col-lg-6 col-sm-12 mb-3">
+            <div class="col-lg-4 col-sm-12 mb-3">
                 <a href="{{ route('penonton.form') }}" class="col-12 btn btn-warning">
                     <i class="bi bi-plus-lg"></i> Buka Form OTS
+                </a>
+            </div>
+            <div class="col-lg-4 col-sm-12 mb-3">
+                <a href="{{ route('penonton.counter') }}" class="col-12 btn btn-dark">
+                    <i class="bi bi-plus-lg"></i> Lihat Counter Penonton
                 </a>
             </div>
         </div>

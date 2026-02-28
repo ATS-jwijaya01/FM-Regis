@@ -11,3 +11,4 @@ Route::post('/check-in-penonton', [PenontonController::class, 'checkIn'])->name(
 Route::get('/table-penonton', [PenontonController::class, 'table'])->name('penonton.table');
 Route::get('/datatable-penonton', [PenontonController::class, 'datatable'])->name('penonton.datatable');
 Route::get('/import-penonton', [PenontonController::class, 'import'])->name('penonton.import');
+Route::get('/counter-penonton', [PenontonController::class, 'counter'])->name('penonton.counter');

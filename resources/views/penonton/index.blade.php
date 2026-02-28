@@ -39,6 +39,12 @@
                     Tambah Penonton OTS
                 </a>
             </div>
+            <div class="mt-4 text-center">
+                <!-- Button to go to table page -->
+                <a href="{{ route('penonton.counter') }}" class="btn btn-outline-primary w-100">
+                    Lihat Counter Penonton
+                </a>
+            </div>
         </div>
     </div>
 

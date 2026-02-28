@@ -13,6 +13,19 @@ class PenontonController extends Controller
         // TODO: Implement logic for displaying the main penonton page
         return view('penonton.index');
     }
+    public function counter()
+    {
+        $OTS = PenontonModel::where('tipe_penonton', PenontonModel::TIPE_PENONTON_OTS)->count();
+        $PengunjungUmum = PenontonModel::where('tipe_penonton', PenontonModel::TIPE_PENONTON_PENGUNJUNG_UMUM)->count();
+        $totalPenonton = $OTS + $PengunjungUmum;
+
+        $totalPengunjungUmumCheckin = PenontonModel::where('tipe_penonton', PenontonModel::TIPE_PENONTON_PENGUNJUNG_UMUM)->where('status_penonton', PenontonModel::STATUS_PENONTON_CHECKIN)->count();
+        $persentasePengunjungUmumCheckin = number_format(($totalPengunjungUmumCheckin / $PengunjungUmum) * 100, 2);
+        $totalPengunjungUmumBelumCheckin = $PengunjungUmum - $totalPengunjungUmumCheckin;
+        
+
+        return view('penonton.counter', compact('OTS', 'PengunjungUmum', 'totalPenonton', 'persentasePengunjungUmumCheckin', 'totalPengunjungUmumBelumCheckin'));
+    }
 
     public function validateKodePenonton(Request $request)
     {

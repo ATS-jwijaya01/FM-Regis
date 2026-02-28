@@ -37,6 +37,9 @@
                 <a href="{{ route('penonton.table') }}" class="btn btn-outline-success w-100">
                     Lihat Tabel Penonton
                 </a>
+                <a href="{{ route('penonton.counter') }}" class="btn btn-outline-success w-100">
+                    Lihat Counter Penonton
+                </a>
             </div>
 
             <!-- Success alert -->
